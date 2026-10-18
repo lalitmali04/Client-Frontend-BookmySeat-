@@ -268,6 +268,53 @@ export const HomePage: React.FC = () => {
               </section>
             )}
 
+            {/* Fallback if no specific section matched but movies were found */}
+            {nowShowing.length === 0 && trendingMovies.length === 0 && events.length === 0 && upcoming.length === 0 && movies.length > 0 && (
+              <section className="mb-14">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-500 shadow-sm">
+                      <Film className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                        Matching Experiences
+                      </h2>
+                      <p className="text-xs text-slate-400">Found {movies.length} titles matching your filter</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+                  {movies.map((movie) => (
+                    <MovieCard key={movie.id} movie={movie} onWatchTrailer={handleWatchTrailer} />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Empty State when 0 movies found */}
+            {movies.length === 0 && (
+              <div className="text-center py-16 studio-glass rounded-3xl border border-white/[0.08] mb-12">
+                <Film className="w-12 h-12 text-slate-500 mx-auto mb-3 opacity-60" />
+                <h3 className="text-lg font-bold text-white mb-1">No experiences found</h3>
+                <p className="text-xs text-slate-400 mb-5 max-w-sm mx-auto">
+                  We couldn't find any titles matching your selected filters or categories.
+                </p>
+                <button
+                  onClick={() => {
+                    setActiveCategory('all');
+                    setSelectedGenre('All Genres');
+                    setSelectedLanguage('All Languages');
+                    setSearchParams({});
+                  }}
+                  className="px-5 py-2.5 rounded-full bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition shadow-lg shadow-rose-600/30 cursor-pointer"
+                >
+                  Reset All Filters
+                </button>
+              </div>
+            )}
+
             {/* Ticket Perks & Offers Perforated Banner */}
             <section className="relative p-6 sm:p-8 rounded-3xl studio-glass border border-rose-500/20 shadow-2xl mb-12 overflow-hidden ticket-edge-left ticket-edge-right">
               <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
